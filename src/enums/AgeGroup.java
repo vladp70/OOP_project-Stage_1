@@ -2,7 +2,7 @@ package enums;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public enum Age {
+public enum AgeGroup {
 
     @JsonProperty("Baby")
     BABY("Baby"),
@@ -14,11 +14,14 @@ public enum Age {
     TEEN("Teen"),
 
     @JsonProperty("Young Adult")
-    YOUNG_ADULT("Young Adult");
+    YOUNG_ADULT("Young Adult"),
+
+    @JsonProperty("Unknown")
+    UNKNOWN("Unknown");
 
     private String value;
 
-    Age(final String value) {
+    AgeGroup(final String value) {
         this.value = value;
     }
 }

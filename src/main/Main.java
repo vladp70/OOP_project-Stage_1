@@ -49,7 +49,7 @@ public final class Main {
 
 
 
-        //action("tests/test2.json", "output/out_test");
+        action("tests/test2.json", "output/out_test");
 
 
 
@@ -81,11 +81,14 @@ public final class Main {
         Database database = Database.getInstance();
         database.initDatabase(input);
 
+        output.addYearlyReport(database.simulateYearZero());
+
+        /*output.addNewYear();
         output.addChildReport(new AnnualChildReport(database.getChildren().get(0), 228.1764705882353));
         output.addChildReport(new AnnualChildReport(database.getChildren().get(1), 760.5882352941177));
         output.addNewYear();
         output.addChildReport(new AnnualChildReport(database.getChildren().get(0), 345.1764705882353));
-        output.addChildReport(new AnnualChildReport(database.getChildren().get(1), 862.9411764705883));
+        output.addChildReport(new AnnualChildReport(database.getChildren().get(1), 862.9411764705883));*/
 
         output.writeToFile(filePath2);
     }

@@ -12,7 +12,6 @@ public class Output {
     List<YearlyOutput> annualChildren = new ArrayList<>();
 
     public Output() {
-        addNewYear();
     }
 
     public List<YearlyOutput> getAnnualChildren() {
@@ -25,6 +24,10 @@ public class Output {
 
     public void addChildReport(final AnnualChildReport report) {
         annualChildren.get(annualChildren.size() - 1).addReport(report);
+    }
+
+    public void addYearlyReport(final List<AnnualChildReport> report) {
+        annualChildren.add(new YearlyOutput(report));
     }
 
     public void addNewYear() {

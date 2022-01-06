@@ -1,8 +1,10 @@
 package children;
 
+import enums.AgeGroup;
 import enums.Category;
 import enums.Cities;
 import gifts.Gift;
+import utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,8 @@ public class Child implements Comparable<Child> {
     private Double averageScore = 0.0;
     //TODO: gifts needs to support push at the beginning
     private List<Gift> receivedGifts = new ArrayList<>();
+    private AgeGroup ageGroup = AgeGroup.UNKNOWN;
+    private AverageScoreStrategy averageScoreStrategy = null;
 
     public Integer getId() {
         return id;
@@ -69,6 +73,7 @@ public class Child implements Comparable<Child> {
     }
 
     public Double getAverageScore() {
+        calculateAverageScore();
         return averageScore;
     }
 
@@ -96,11 +101,47 @@ public class Child implements Comparable<Child> {
         return receivedGifts;
     }
 
-    public void setReceivedGifts(List<Gift> receivedGifts) {
-        this.receivedGifts = receivedGifts;
+    public void receiveGift(Gift receivedGift) {
+        if (receivedGift != null) {
+            this.receivedGifts.add(receivedGift);
+        }
     }
 
+    public AgeGroup getAgeGroup() {
+        return ageGroup;
+    }
 
+    public void setAgeGroup(AgeGroup ageGroup) {
+        this.ageGroup = ageGroup;
+    }
+
+    public void initNiceScoreHistory() {
+        niceScoreHistory.add(niceScore);
+    }
+
+    public void setStrategy() {
+        averageScoreStrategy =AverageScoreStrategyFactory.getInstance()
+                .createStrategy(ageGroup);
+    }
+
+    public void initAgeGroup() {
+        if (ageGroup == AgeGroup.UNKNOWN) {
+            ageGroup = Utils.ageToAgeGroup(age);
+        }
+    }
+
+    public void incrementAge() {
+        age++;
+        initAgeGroup();
+        if (age > Utils.upperLimitAgeGroup(ageGroup)) {
+            ageGroup = Utils.nextAgeGroup(ageGroup);
+            setStrategy();
+        }
+    }
+
+    //TODO: implement strategy to calculate average
+    private void calculateAverageScore() {
+    }
 
     @Override
     public String toString() {
