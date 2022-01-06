@@ -72,11 +72,6 @@ public class Child implements Comparable<Child> {
         this.niceScoreHistory = niceScoreHistory;
     }
 
-    public Double getAverageScore() {
-        calculateAverageScore();
-        return averageScore;
-    }
-
     public void setAverageScore(Double averageScore) {
         this.averageScore = averageScore;
     }
@@ -124,6 +119,11 @@ public class Child implements Comparable<Child> {
                 .createStrategy(ageGroup);
     }
 
+    public Double getAverageScore() {
+        averageScore = averageScoreStrategy.getAverageScore(this);
+        return averageScore;
+    }
+
     public void initAgeGroup() {
         if (ageGroup == AgeGroup.UNKNOWN) {
             ageGroup = Utils.ageToAgeGroup(age);
@@ -137,10 +137,6 @@ public class Child implements Comparable<Child> {
             ageGroup = Utils.nextAgeGroup(ageGroup);
             setStrategy();
         }
-    }
-
-    //TODO: implement strategy to calculate average
-    private void calculateAverageScore() {
     }
 
     @Override
