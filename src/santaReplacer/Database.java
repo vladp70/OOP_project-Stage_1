@@ -3,7 +3,9 @@ package santaReplacer;
 import children.Child;
 import enums.AgeGroup;
 import enums.Category;
+import fileio.AnnualChildReport;
 import fileio.Input;
+import fileio.Output;
 import gifts.Gift;
 
 import java.util.ArrayList;
@@ -27,11 +29,6 @@ public class Database {
             instance = new Database();
         }
         return instance;
-    }
-
-    //TODO: implement clear database?
-    public static void Clear() {
-
     }
 
     public Integer getNumberOfYears() {
@@ -60,15 +57,17 @@ public class Database {
         children = input.getInitialData().getChildren();
         gifts = input.getInitialData().getSantaGiftsList();
         annualChanges = input.getAnnualChanges();
-        initChildren();
-        removeAdults();
-        Collections.sort(children);
+        initChildrenList(children);
     }
 
-    public void initChildren() {
-        children.forEach((child) -> {child.initAgeGroup();
-                                    child.initNiceScoreHistory();
-                                    child.setStrategy();});
+    public void initChildren(List<Child> children) {
+        children.forEach(Child::init);
+    }
+
+    public void initChildrenList(List<Child> children) {
+        initChildren(children);
+        removeAdults();
+        Collections.sort(children);
     }
 
     public void incrementAges() {
@@ -78,6 +77,8 @@ public class Database {
     public void removeAdults() {
         children.removeIf(child -> (child.getAgeGroup().equals(AgeGroup.YOUNG_ADULT)));
     }
+
+    public void clearChildrenGifts() {children.forEach(Child::clearGifts);}
 
     public void calculateBudgetUnit() {
         Double averageSum = 0.0;
@@ -128,10 +129,48 @@ public class Database {
         return new AnnualChildReport(child, budgetUnit * child.getAverageScore());
     }
 
-    public List<AnnualChildReport> simulateYearZero() {
-        calculateBudgetUnit();
+    public Child findChildByID(final int id) {
+        for (var child : children) {
+            if (child.getId().equals(id)) {
+                return child;
+            }
+        }
+        return null;
+    }
+
+    public void implementAnnualChange(AnnualChange changes) {
+        incrementAges();
+        clearChildrenGifts();
+        children.addAll(changes.getNewChildren());
+        initChildren(changes.getNewChildren());
+        removeAdults();
+        Collections.sort(children);
+        gifts.addAll(changes.getNewGifts());
+        santaBudget = changes.getNewSantaBudget();
+
+        for (var update : changes.getChildrenUpdates()) {
+            Child updatedChild = findChildByID(update.getId());
+            if (updatedChild == null) {
+                continue;
+            }
+
+            if (update.getNiceScore() != null) {
+                updatedChild.addNiceScore(update.getNiceScore());
+            }
+            updatedChild.addPreferences(update.getGiftsPreferences());
+        }
+    }
+
+    public List<AnnualChildReport> simulateRound(final int round) {
         List<AnnualChildReport> report = new ArrayList<>();
 
+        if (round > numberOfYears || round < 0) {
+            return report;
+        } else if (round != 0) {
+            implementAnnualChange(annualChanges.get(round - 1));
+        }
+
+        calculateBudgetUnit();
         for (var child : children) {
             report.add(assignGiftsToChild(child));
         }

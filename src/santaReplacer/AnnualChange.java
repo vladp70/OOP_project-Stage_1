@@ -42,14 +42,4 @@ public class AnnualChange {
     public void setChildrenUpdates(List<ChildUpdate> childrenUpdates) {
         this.childrenUpdates = childrenUpdates;
     }
-
-    @Override
-    public String toString() {
-        return "{" +
-                "newSantaBudget=" + newSantaBudget +
-                ", newGifts=" + newGifts +
-                ", newChildren=" + newChildren +
-                ", childrenUpdates=" + childrenUpdates +
-                '}';
-    }
 }

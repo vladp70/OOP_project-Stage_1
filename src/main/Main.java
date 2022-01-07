@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import common.Constants;
 import fileio.Input;
 import fileio.Output;
-import santaReplacer.AnnualChildReport;
 import santaReplacer.Database;
 
 import java.io.File;
@@ -14,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.StringTokenizer;
 
 /**
  * Class used to run the code
@@ -44,19 +44,10 @@ public final class Main {
             }
         }
 
-
-
-
-
-
-        action("tests/test2.json", "output/out_test");
-
-
-
-
-
         for (File file : Objects.requireNonNull(directory.listFiles())) {
-            String filepath = Constants.OUTPUT_PATH + file.getName();
+            int testNumber = Integer.valueOf(file.getName().replaceAll("[^0-9]", ""));
+            String filepath = Constants.OUTPUT_PATH + testNumber
+                    + Constants.FILE_EXTENSION;
             File out = new File(filepath);
             boolean isCreated = out.createNewFile();
             if (isCreated) {
@@ -81,14 +72,9 @@ public final class Main {
         Database database = Database.getInstance();
         database.initDatabase(input);
 
-        output.addYearlyReport(database.simulateYearZero());
-
-        /*output.addNewYear();
-        output.addChildReport(new AnnualChildReport(database.getChildren().get(0), 228.1764705882353));
-        output.addChildReport(new AnnualChildReport(database.getChildren().get(1), 760.5882352941177));
-        output.addNewYear();
-        output.addChildReport(new AnnualChildReport(database.getChildren().get(0), 345.1764705882353));
-        output.addChildReport(new AnnualChildReport(database.getChildren().get(1), 862.9411764705883));*/
+        for (int i = 0; i <= database.getNumberOfYears(); i++) {
+            output.addYearlyReport(database.simulateRound(i));
+        }
 
         output.writeToFile(filePath2);
     }

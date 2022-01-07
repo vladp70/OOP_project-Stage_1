@@ -36,11 +36,11 @@ public final class Utils {
     }
 
     public static AgeGroup ageToAgeGroup(final Integer age) {
-        if (0 <= age && age < Constants.UPPER_LIMIT_BABY) {
+        if (0 <= age && age <= Constants.UPPER_LIMIT_BABY) {
             return AgeGroup.BABY;
-        } else if (Constants.UPPER_LIMIT_BABY <= age && age < Constants.UPPER_LIMIT_KID) {
+        } else if (Constants.UPPER_LIMIT_BABY < age && age <= Constants.UPPER_LIMIT_KID) {
             return AgeGroup.KID;
-        } else if (Constants.UPPER_LIMIT_KID <= age && age <= Constants.UPPER_LIMIT_TEEN) {
+        } else if (Constants.UPPER_LIMIT_KID < age && age <= Constants.UPPER_LIMIT_TEEN) {
             return AgeGroup.TEEN;
         } else if (Constants.UPPER_LIMIT_TEEN < age) {
             return AgeGroup.YOUNG_ADULT;

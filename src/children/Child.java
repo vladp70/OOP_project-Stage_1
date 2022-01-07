@@ -7,6 +7,8 @@ import gifts.Gift;
 import utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Child implements Comparable<Child> {
@@ -16,7 +18,7 @@ public class Child implements Comparable<Child> {
     private Integer age;
     private Cities city;
     private Double niceScore;
-    private List<Category> giftsPreferences;
+    private LinkedList<Category> giftsPreferences;
     private List<Double> niceScoreHistory = new ArrayList<>();
     private Double averageScore = 0.0;
     //TODO: gifts needs to support push at the beginning
@@ -80,7 +82,7 @@ public class Child implements Comparable<Child> {
         return giftsPreferences;
     }
 
-    public void setGiftsPreferences(List<Category> giftsPreferences) {
+    public void setGiftsPreferences(LinkedList<Category> giftsPreferences) {
         this.giftsPreferences = giftsPreferences;
     }
 
@@ -110,8 +112,8 @@ public class Child implements Comparable<Child> {
         this.ageGroup = ageGroup;
     }
 
-    public void initNiceScoreHistory() {
-        niceScoreHistory.add(niceScore);
+    public void addNiceScore(final Double newNiceScore) {
+        niceScoreHistory.add(newNiceScore);
     }
 
     public void setStrategy() {
@@ -130,13 +132,33 @@ public class Child implements Comparable<Child> {
         }
     }
 
+    public void init() {
+        initAgeGroup();
+        addNiceScore(niceScore);
+        setStrategy();
+    }
+
+    public void addPreferences(List<Category> newGiftsPreferences) {
+        LinkedList<Category> aux = new LinkedList<>(newGiftsPreferences);
+        while (!(aux.isEmpty())) {
+            var newPreferenece = aux.removeLast();
+            if (giftsPreferences.contains(newPreferenece)) {
+                giftsPreferences.remove(newPreferenece);
+            }
+            giftsPreferences.addFirst(newPreferenece);
+        }
+    }
+
     public void incrementAge() {
         age++;
-        initAgeGroup();
         if (age > Utils.upperLimitAgeGroup(ageGroup)) {
             ageGroup = Utils.nextAgeGroup(ageGroup);
             setStrategy();
         }
+    }
+
+    public void clearGifts() {
+        receivedGifts.clear();
     }
 
     @Override

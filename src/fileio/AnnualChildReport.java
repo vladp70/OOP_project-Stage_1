@@ -1,10 +1,11 @@
-package santaReplacer;
+package fileio;
 
 import children.Child;
 import enums.Category;
 import enums.Cities;
 import gifts.Gift;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AnnualChildReport {
@@ -25,10 +26,10 @@ public class AnnualChildReport {
         this.firstName = child.getFirstName();
         this.city = child.getCity();
         this.age = child.getAge();
-        this.giftsPreferences = child.getGiftsPreferences();
+        this.giftsPreferences = new ArrayList<>(child.getGiftsPreferences());
         this.averageScore = child.getAverageScore();
-        this.niceScoreHistory = child.getNiceScoreHistory();
-        this.receivedGifts = child.getReceivedGifts();
+        this.niceScoreHistory = new ArrayList<>(child.getNiceScoreHistory());
+        this.receivedGifts = new ArrayList<>(child.getReceivedGifts());
         this.assignedBudget = assignedBudget;
     }
 

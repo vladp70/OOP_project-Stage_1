@@ -32,13 +32,4 @@ public class ChildUpdate {
     public void setGiftsPreferences(final List<Category> giftsPreferences) {
         this.giftsPreferences = giftsPreferences;
     }
-
-    @Override
-    public String toString() {
-        return "ChildUpdate{" +
-                "id=" + id +
-                ", niceScore=" + niceScore +
-                ", giftsPreferences=" + giftsPreferences +
-                '}';
-    }
 }
