@@ -1,10 +1,10 @@
-package santaReplacer;
+package santareplacer;
 
 import enums.Category;
 
 import java.util.List;
 
-public class ChildUpdate {
+public final class ChildUpdate {
     private Integer id;
     private Double niceScore;
     private List<Category> giftsPreferences;

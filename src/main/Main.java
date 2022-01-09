@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import common.Constants;
 import fileio.Input;
 import fileio.Output;
-import santaReplacer.Database;
+import santareplacer.Database;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
-import java.util.StringTokenizer;
 
 /**
  * Class used to run the code
@@ -44,21 +43,23 @@ public final class Main {
             }
         }
 
-        for (File file : Objects.requireNonNull(directory.listFiles())) {
-            int testNumber = Integer.valueOf(file.getName().replaceAll("[^0-9]", ""));
-            String filepath = Constants.OUTPUT_PATH + testNumber
-                    + Constants.FILE_EXTENSION;
-            File out = new File(filepath);
-            boolean isCreated = out.createNewFile();
-            if (isCreated) {
-                action(file.getAbsolutePath(), filepath);
+            for (File file : Objects.requireNonNull(directory.listFiles())) {
+                String testNumber = file.getName().replaceAll("[^0-9]", "");
+                String filepath = Constants.OUTPUT_PATH + testNumber
+                        + Constants.FILE_EXTENSION;
+                File out = new File(filepath);
+                boolean isCreated = out.createNewFile();
+                if (isCreated) {
+                    action(file.getAbsolutePath(), filepath);
+                }
             }
-        }
 
         Checker.calculateScore();
     }
 
     /**
+     * Main logic of the program that reads data from the input file, simulates the rounds
+     * and writes the result in the output file
      * @param filePath1 for input file
      * @param filePath2 for output file
      * @throws IOException in case of exceptions to reading / writing
@@ -66,7 +67,12 @@ public final class Main {
     public static void action(final String filePath1,
                               final String filePath2) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Input input = objectMapper.readValue(new File(filePath1), Input.class);
+        Input input = null;
+        try {
+            input = objectMapper.readValue(new File(filePath1), Input.class);
+        } catch (Exception e) {
+            System.out.println("It happens to the best of us! :(");
+        }
         Output output = new Output();
 
         Database database = Database.getInstance();

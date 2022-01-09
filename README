@@ -1,0 +1,17 @@
+OOP - Project - Stage 1: Santa Claus is coming to ACS students
+Vlad Petrovici - 321CD
+---------------------------------------------------------------------------------
+
+# Flow and interactions
+
+The input data is parsed from json files and it is used to build the database of children, gifts and annual changes using objects whose hierarchy of fields matches with same structure seen in the input files and the Jackson library.
+
+When initializing the actual data in the database (using the input object), we copy the data to the database and initialize the children list, which calls for every child to calculate its age group based on their age, assign a strategy accordingly (after the strategy factory creates one based on the age group it applies to) and add the initial nice score to the list. The children list is sorted after the yound adults are removed.
+
+The database contains references to the objects so there is a smoother and more direct transition between working with different entities, thus avoiding always returning to the database to make the connection. It can find children based on their id and it can apply different actions on its lists.
+
+The rounds/years are then simulated consecutively. If the round being enacted is the initial one (zero), the annual change stage of the simulation is skipped. If not, all children have their ages incremented and the new data is added to the database. Adults are removed and the list is sorted by id once again. New gift preferences for the children are added to the beginning of their linked list of preferences. The simulation continues by calculating the budget unit and assigning gifts to every child, based on personal preferenece and while the budget allocated for them allows buying those gifts.
+
+The average nice score of every child is found by it calling the strategy class on itself and assigning the returned score to its field. The encapsulation is ensured by children not knowing (and not needing to know) which strategy they apply (as all of them implement the same strategy interface).
+
+Every year corresponds to a yearly report that is composed of every child's situation (including a deep copy of their received gifts) and the calculated budget they were assigned. These are cumulated in a yearly output object that corresponds to the output syntax the program should emit. The result is written in the output file as json.

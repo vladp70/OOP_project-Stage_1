@@ -7,11 +7,10 @@ import gifts.Gift;
 import utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Child implements Comparable<Child> {
+public final class Child implements Comparable<Child> {
     private Integer id;
     private String lastName;
     private String firstName;
@@ -21,7 +20,6 @@ public class Child implements Comparable<Child> {
     private LinkedList<Category> giftsPreferences;
     private List<Double> niceScoreHistory = new ArrayList<>();
     private Double averageScore = 0.0;
-    //TODO: gifts needs to support push at the beginning
     private List<Gift> receivedGifts = new ArrayList<>();
     private AgeGroup ageGroup = AgeGroup.UNKNOWN;
     private AverageScoreStrategy averageScoreStrategy = null;
@@ -30,7 +28,7 @@ public class Child implements Comparable<Child> {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(final Integer id) {
         this.id = id;
     }
 
@@ -38,7 +36,7 @@ public class Child implements Comparable<Child> {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(final String lastName) {
         this.lastName = lastName;
     }
 
@@ -46,7 +44,7 @@ public class Child implements Comparable<Child> {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(final String firstName) {
         this.firstName = firstName;
     }
 
@@ -54,7 +52,7 @@ public class Child implements Comparable<Child> {
         return age;
     }
 
-    public void setAge(Integer age) {
+    public void setAge(final Integer age) {
         this.age = age;
     }
 
@@ -62,7 +60,7 @@ public class Child implements Comparable<Child> {
         return city;
     }
 
-    public void setCity(Cities city) {
+    public void setCity(final Cities city) {
         this.city = city;
     }
 
@@ -70,11 +68,11 @@ public class Child implements Comparable<Child> {
         return niceScoreHistory;
     }
 
-    public void setNiceScoreHistory(List<Double> niceScoreHistory) {
+    public void setNiceScoreHistory(final List<Double> niceScoreHistory) {
         this.niceScoreHistory = niceScoreHistory;
     }
 
-    public void setAverageScore(Double averageScore) {
+    public void setAverageScore(final Double averageScore) {
         this.averageScore = averageScore;
     }
 
@@ -82,7 +80,7 @@ public class Child implements Comparable<Child> {
         return giftsPreferences;
     }
 
-    public void setGiftsPreferences(LinkedList<Category> giftsPreferences) {
+    public void setGiftsPreferences(final LinkedList<Category> giftsPreferences) {
         this.giftsPreferences = giftsPreferences;
     }
 
@@ -90,7 +88,7 @@ public class Child implements Comparable<Child> {
         return niceScore;
     }
 
-    public void setNiceScore(Double niceScore) {
+    public void setNiceScore(final Double niceScore) {
         this.niceScore = niceScore;
     }
 
@@ -98,7 +96,7 @@ public class Child implements Comparable<Child> {
         return receivedGifts;
     }
 
-    public void receiveGift(Gift receivedGift) {
+    public void receiveGift(final Gift receivedGift) {
         if (receivedGift != null) {
             this.receivedGifts.add(receivedGift);
         }
@@ -108,7 +106,7 @@ public class Child implements Comparable<Child> {
         return ageGroup;
     }
 
-    public void setAgeGroup(AgeGroup ageGroup) {
+    public void setAgeGroup(final AgeGroup ageGroup) {
         this.ageGroup = ageGroup;
     }
 
@@ -117,7 +115,7 @@ public class Child implements Comparable<Child> {
     }
 
     public void setStrategy() {
-        averageScoreStrategy =AverageScoreStrategyFactory.getInstance()
+        averageScoreStrategy = AverageScoreStrategyFactory.getInstance()
                 .createStrategy(ageGroup);
     }
 
@@ -132,23 +130,38 @@ public class Child implements Comparable<Child> {
         }
     }
 
+    /**
+     * Initializes the age group based on the child's age, adds the initial nice score
+     * (from the round 0) to the nice score history, and creates a strategy based on
+     * the age group and assigns it to the child
+     */
     public void init() {
         initAgeGroup();
         addNiceScore(niceScore);
         setStrategy();
     }
 
-    public void addPreferences(List<Category> newGiftsPreferences) {
+    /**
+     * Converts the new preferences to a linked list (used as a reversed stack) and,
+     * for every category, deletes if it's already existing among the preferences
+     * and adds it at the beginning of that list
+     * @param newGiftsPreferences preferences to be added to the start of the already existing list
+     */
+    public void addPreferences(final List<Category> newGiftsPreferences) {
         LinkedList<Category> aux = new LinkedList<>(newGiftsPreferences);
         while (!(aux.isEmpty())) {
-            var newPreferenece = aux.removeLast();
-            if (giftsPreferences.contains(newPreferenece)) {
-                giftsPreferences.remove(newPreferenece);
+            var newPreference = aux.removeLast();
+            if (giftsPreferences.contains(newPreference)) {
+                giftsPreferences.remove(newPreference);
             }
-            giftsPreferences.addFirst(newPreferenece);
+            giftsPreferences.addFirst(newPreference);
         }
     }
 
+    /**
+     * Increments the child's age by 1 and if it crosses the current age group threshold,
+     * the age group is also "incremented" to the next one chronologically
+     */
     public void incrementAge() {
         age++;
         if (age > Utils.upperLimitAgeGroup(ageGroup)) {
@@ -163,18 +176,17 @@ public class Child implements Comparable<Child> {
 
     @Override
     public String toString() {
-        return firstName + " " + lastName + " (" +
-                id + ") {" +
-                age + " yo" +
-                ", " + city +
-                ", niceScoreHistory: " + niceScoreHistory +
-                ", averageScore: " + averageScore +
-                ", giftsPreferences: " + giftsPreferences +
-                "}";
+        return firstName + " " + lastName + " ("
+                + id + ") {"
+                + age + " yo"
+                + ", " + city
+                + ", niceScoreHistory: " + niceScoreHistory
+                + ", averageScore: " + averageScore
+                + ", giftsPreferences: " + giftsPreferences + "}";
     }
 
     @Override
-    public int compareTo(Child o) {
+    public int compareTo(final Child o) {
         return this.id.compareTo(o.getId());
     }
 }

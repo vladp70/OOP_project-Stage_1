@@ -1,8 +1,8 @@
 package children;
 
-public class KidAverageScoreStrategy implements AverageScoreStrategy{
+public final class KidAverageScoreStrategy implements AverageScoreStrategy {
     @Override
-    public Double getAverageScore(Child child) {
+    public Double getAverageScore(final Child child) {
         Double res = 0.0;
         for (var score : child.getNiceScoreHistory()) {
             res += score;

@@ -8,7 +8,7 @@ import gifts.Gift;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnnualChildReport {
+public final class AnnualChildReport {
     private Integer id;
     private String lastName;
     private String firstName;
@@ -20,6 +20,13 @@ public class AnnualChildReport {
     private Double assignedBudget;
     private List<Gift> receivedGifts;
 
+    /**
+     * Creates the report based on a semi-deep copy of the child data and the budget.
+     * It needs to contain deep copies of the child's lists because those fields can
+     * change in ulterior rounds, but the report needs to be independent of those updates.
+     * @param child whose annual situation needs to be reported
+     * @param assignedBudget by Santa
+     */
     public AnnualChildReport(final Child child, final Double assignedBudget) {
         this.id = child.getId();
         this.lastName = child.getLastName();

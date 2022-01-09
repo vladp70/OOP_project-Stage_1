@@ -1,12 +1,10 @@
 package fileio;
 
-import children.Child;
-import gifts.Gift;
-import santaReplacer.AnnualChange;
+import santareplacer.AnnualChange;
 
 import java.util.List;
 
-public class Input {
+public final class Input {
     private Integer numberOfYears;
     private Double santaBudget;
     private InitialDataInput initialData;
@@ -16,7 +14,7 @@ public class Input {
         return numberOfYears;
     }
 
-    public void setNumberOfYears(Integer numberOfYears) {
+    public void setNumberOfYears(final Integer numberOfYears) {
         this.numberOfYears = numberOfYears;
     }
 
@@ -24,7 +22,7 @@ public class Input {
         return santaBudget;
     }
 
-    public void setSantaBudget(Double santaBudget) {
+    public void setSantaBudget(final Double santaBudget) {
         this.santaBudget = santaBudget;
     }
 
@@ -32,7 +30,7 @@ public class Input {
         return annualChanges;
     }
 
-    public void setAnnualChanges(List<AnnualChange> annualChanges) {
+    public void setAnnualChanges(final List<AnnualChange> annualChanges) {
         this.annualChanges = annualChanges;
     }
 
@@ -40,17 +38,16 @@ public class Input {
         return initialData;
     }
 
-    public void setInitialData(InitialDataInput initialData) {
+    public void setInitialData(final InitialDataInput initialData) {
         this.initialData = initialData;
     }
 
     @Override
     public String toString() {
-        return "Input{\n" +
-                "numberOfYears = " + numberOfYears + ",\n" +
-                "santaBudget = " + santaBudget + ",\n" +
-                initialData + ",\n" +
-                "annualChanges: " + annualChanges +
-                '}';
+        return "Input{\n"
+                + "numberOfYears = " + numberOfYears + ",\n"
+                + "santaBudget = " + santaBudget + ",\n"
+                + initialData + ",\n"
+                + "annualChanges: " + annualChanges + '}';
     }
 }

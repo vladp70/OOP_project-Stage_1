@@ -5,7 +5,7 @@ import gifts.Gift;
 
 import java.util.List;
 
-public class InitialDataInput {
+public final class InitialDataInput {
     private List<Child> children;
     private List<Gift> santaGiftsList;
 
@@ -27,9 +27,9 @@ public class InitialDataInput {
 
     @Override
     public String toString() {
-        return "InitialDataInput{\n" +
-                "children=" + children +
-                ",\nsantaGiftsList=" + santaGiftsList +
-                '}';
+        return "InitialDataInput{\n"
+                + "children=" + children
+                + ",\nsantaGiftsList=" + santaGiftsList
+                + '}';
     }
 }

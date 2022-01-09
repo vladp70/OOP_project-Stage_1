@@ -1,28 +1,26 @@
-package santaReplacer;
+package santareplacer;
 
 import children.Child;
 import enums.AgeGroup;
 import enums.Category;
 import fileio.AnnualChildReport;
 import fileio.Input;
-import fileio.Output;
 import gifts.Gift;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Database {
+public final class Database {
     private static Database instance = null;
     private Integer numberOfYears;
     private Double santaBudget;
-    //TODO: map for children found by id
     private List<Child> children;
     private List<Gift> gifts;
     private List<AnnualChange> annualChanges;
     private Double budgetUnit;
 
-    private Database() {}
+    private Database() { }
 
     public static Database getInstance() {
         if (instance == null) {
@@ -51,7 +49,14 @@ public class Database {
         return annualChanges;
     }
 
+    /**
+     * Copies the input data to this database object and initializes the children in the database
+     * @param input that contains the initial state of the Santa database
+     */
     public void initDatabase(final Input input) {
+        if (input == null) {
+            return;
+        }
         numberOfYears = input.getNumberOfYears();
         santaBudget = input.getSantaBudget();
         children = input.getInitialData().getChildren();
@@ -60,14 +65,18 @@ public class Database {
         initChildrenList(children);
     }
 
-    public void initChildren(List<Child> children) {
-        children.forEach(Child::init);
+    public void initChildren(final List<Child> childrenList) {
+        childrenList.forEach(Child::init);
     }
 
-    public void initChildrenList(List<Child> children) {
-        initChildren(children);
+    /**
+     * Initializes every child in the list, removes young adults and sorts the list by child id
+     * @param childrenList to be initialized as a list to comply with the database rules
+     */
+    public void initChildrenList(final List<Child> childrenList) {
+        initChildren(childrenList);
         removeAdults();
-        Collections.sort(children);
+        Collections.sort(childrenList);
     }
 
     public void incrementAges() {
@@ -78,7 +87,9 @@ public class Database {
         children.removeIf(child -> (child.getAgeGroup().equals(AgeGroup.YOUNG_ADULT)));
     }
 
-    public void clearChildrenGifts() {children.forEach(Child::clearGifts);}
+    public void clearChildrenGifts() {
+        children.forEach(Child::clearGifts);
+    }
 
     public void calculateBudgetUnit() {
         Double averageSum = 0.0;
@@ -108,7 +119,7 @@ public class Database {
         return cheapestGift;
     }
 
-    public AnnualChildReport assignGiftsToChild(Child child) {
+    public AnnualChildReport assignGiftsToChild(final Child child) {
         Double childBudget = budgetUnit * child.getAverageScore();
 
         for (var preference : child.getGiftsPreferences()) {
@@ -138,7 +149,14 @@ public class Database {
         return null;
     }
 
-    public void implementAnnualChange(AnnualChange changes) {
+    /**
+     * Simulates the children growing up, resets their received gifts,
+     * adds new data and initializes it, removes adults, sorts lists,
+     * then implements children updates by finding the child in the database,
+     * adding the new nice score (if existing) and adds their new preferences
+     * @param changes to be implemented this year/round
+     */
+    public void implementAnnualChange(final AnnualChange changes) {
         incrementAges();
         clearChildrenGifts();
         children.addAll(changes.getNewChildren());
@@ -161,6 +179,13 @@ public class Database {
         }
     }
 
+    /**
+     * If the round index is valid and not 0 (when the annual changes stage is skipped),
+     * the budget unit is calculated and every child receives the gifts Santa can provide
+     * based on their preferences
+     * @param round index starting from 0 (initial round)
+     * @return the generated annual report of the children states
+     */
     public List<AnnualChildReport> simulateRound(final int round) {
         List<AnnualChildReport> report = new ArrayList<>();
 
@@ -180,12 +205,11 @@ public class Database {
 
     @Override
     public String toString() {
-        return "Database{" +
-                "numberOfYears=" + numberOfYears +
-                ", santaBudget=" + santaBudget +
-                ",\nchildren=" + children +
-                ",\ngifts=" + gifts +
-                ",\nannualChanges=" + annualChanges +
-                '}';
+        return "Database{"
+                + "numberOfYears=" + numberOfYears
+                + ", santaBudget=" + santaBudget
+                + ",\nchildren=" + children
+                + ",\ngifts=" + gifts
+                + ",\nannualChanges=" + annualChanges + '}';
     }
 }

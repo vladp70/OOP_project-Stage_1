@@ -7,8 +7,12 @@ public final class Utils {
     private Utils() {
     }
 
+    /**
+     * @param ageGroup that needs to be "incremented"
+     * @return the next age group in chronological order
+     */
     public static AgeGroup nextAgeGroup(final AgeGroup ageGroup) {
-        switch(ageGroup) {
+        switch (ageGroup) {
             case BABY:
                 return AgeGroup.KID;
             case KID:
@@ -21,8 +25,13 @@ public final class Utils {
         }
     }
 
+    /**
+     * @param ageGroup that needs to be analysed
+     * @return the threshold of the age group
+     * (the last age the child is still considered this age group)
+     */
     public static Integer upperLimitAgeGroup(final AgeGroup ageGroup) {
-        switch(ageGroup) {
+        switch (ageGroup) {
             case BABY:
                 return Constants.UPPER_LIMIT_BABY;
             case KID:
@@ -35,6 +44,12 @@ public final class Utils {
         }
     }
 
+    /**
+     * Calculates based on the thresholds of each age group, the interval
+     * the age belongs to
+     * @param age that needs to be analysed
+     * @return the age group the age implies
+     */
     public static AgeGroup ageToAgeGroup(final Integer age) {
         if (0 <= age && age <= Constants.UPPER_LIMIT_BABY) {
             return AgeGroup.BABY;

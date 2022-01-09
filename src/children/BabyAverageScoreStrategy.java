@@ -1,8 +1,10 @@
 package children;
 
-public class BabyAverageScoreStrategy implements AverageScoreStrategy{
+import common.Constants;
+
+public final class BabyAverageScoreStrategy implements AverageScoreStrategy {
     @Override
-    public Double getAverageScore(Child child) {
-        return 10.0;
+    public Double getAverageScore(final Child child) {
+        return Constants.MAX_NICE_SCORE;
     }
 }

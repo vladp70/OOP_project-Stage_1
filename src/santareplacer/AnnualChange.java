@@ -1,11 +1,11 @@
-package santaReplacer;
+package santareplacer;
 
 import children.Child;
 import gifts.Gift;
 
 import java.util.List;
 
-public class AnnualChange {
+public final class AnnualChange {
     private Double newSantaBudget;
     private List<Gift> newGifts;
     private List<Child> newChildren;
@@ -15,7 +15,7 @@ public class AnnualChange {
         return newSantaBudget;
     }
 
-    public void setNewSantaBudget(Double newSantaBudget) {
+    public void setNewSantaBudget(final Double newSantaBudget) {
         this.newSantaBudget = newSantaBudget;
     }
 
@@ -23,7 +23,7 @@ public class AnnualChange {
         return newGifts;
     }
 
-    public void setNewGifts(List<Gift> newGifts) {
+    public void setNewGifts(final List<Gift> newGifts) {
         this.newGifts = newGifts;
     }
 
@@ -31,7 +31,7 @@ public class AnnualChange {
         return newChildren;
     }
 
-    public void setNewChildren(List<Child> newChildren) {
+    public void setNewChildren(final List<Child> newChildren) {
         this.newChildren = newChildren;
     }
 
@@ -39,7 +39,7 @@ public class AnnualChange {
         return childrenUpdates;
     }
 
-    public void setChildrenUpdates(List<ChildUpdate> childrenUpdates) {
+    public void setChildrenUpdates(final List<ChildUpdate> childrenUpdates) {
         this.childrenUpdates = childrenUpdates;
     }
 }

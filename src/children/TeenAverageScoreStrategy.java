@@ -1,8 +1,8 @@
 package children;
 
-public class TeenAverageScoreStrategy implements AverageScoreStrategy{
+public final class TeenAverageScoreStrategy implements AverageScoreStrategy {
     @Override
-    public Double getAverageScore(Child child) {
+    public Double getAverageScore(final Child child) {
         Integer numScores = child.getNiceScoreHistory().size();
         Double res = 0.0;
         Integer iteration = 0;
